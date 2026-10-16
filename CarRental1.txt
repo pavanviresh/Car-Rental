@@ -1,0 +1,168 @@
+import java.util.*;
+
+class Car {
+    String name;
+    double price;
+    boolean rented;
+
+    Car(String name, double price) {
+        this.name = name;
+        this.price = price;
+        this.rented = false;
+    }
+}
+
+public class CarRental1 {
+    static Scanner sc = new Scanner(System.in);
+    static ArrayList<Car> cars = new ArrayList<>();
+
+    static String[] carTypes = {
+        "Hatchback", "Sedan", "SUV", "Luxury"
+    };
+
+    static void addCar() {
+        System.out.print("Car name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Price per day: ");
+        double price = sc.nextDouble();
+        sc.nextLine();
+
+        cars.add(new Car(name, price));
+        System.out.println("Car added!");
+    }
+
+    static void viewCars() {
+        if (cars.size() == 0) {
+            System.out.println("No cars available!");
+            return;
+        }
+
+        for (int i = 0; i < cars.size(); i++) {
+            System.out.println("\nCar Number: " + i);
+            System.out.println("Car Name: " + cars.get(i).name);
+            System.out.println("Price per day: Rs." + cars.get(i).price);
+
+            if (cars.get(i).rented) {
+                System.out.println("Status: Rented");
+            } else {
+                System.out.println("Status: Available");
+            }
+
+            System.out.println("------------------");
+        }
+    }
+
+    static void rentCar() {
+        viewCars();
+
+        if (cars.size() == 0) {
+            return;
+        }
+
+        System.out.print("Enter car number: ");
+        int n = sc.nextInt();
+
+        try {
+            Car car = cars.get(n);
+
+            if (car.rented) {
+                System.out.println("Car already rented!");
+            } else {
+                System.out.print("Number of days: ");
+                int days = sc.nextInt();
+
+                if (days <= 0) {
+                    System.out.println("Invalid number of days!");
+                } else {
+                    double charge = car.price * days;
+                    car.rented = true;
+
+                    System.out.println("Charge = Rs." + charge);
+                    System.out.println("Car rented successfully!");
+                }
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Invalid car number!");
+        }
+    }
+
+    static void returnCar() {
+        viewCars();
+
+        if (cars.size() == 0) {
+            return;
+        }
+
+        System.out.print("Enter car number: ");
+        int n = sc.nextInt();
+
+        try {
+            Car car = cars.get(n);
+
+            if (!car.rented) {
+                System.out.println("Car is not rented!");
+            } else {
+                car.rented = false;
+                System.out.println("Car returned!");
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Invalid car number!");
+        }
+    }
+
+    static void viewCarTypes() {
+        System.out.println("Available Car Types:");
+
+        for (int i = 0; i < carTypes.length; i++) {
+            System.out.println((i + 1) + ". " + carTypes[i]);
+        }
+    }
+
+    public static void main(String[] args) {
+        int choice;
+
+        do {
+            System.out.println("\n===== CAR RENTAL =====");
+            System.out.println("1. Add Car");
+            System.out.println("2. View Cars");
+            System.out.println("3. Rent Car");
+            System.out.println("4. Return Car");
+            System.out.println("5. View Car Types");
+            System.out.println("6. Exit");
+            System.out.print("Choice: ");
+
+            choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1:
+                    addCar();
+                    break;
+
+                case 2:
+                    viewCars();
+                    break;
+
+                case 3:
+                    rentCar();
+                    break;
+
+                case 4:
+                    returnCar();
+                    break;
+                    case 5:
+                    viewCarTypes();
+                    break;
+
+                case 6:
+                    System.out.println("Thank you!");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice!");
+            }
+
+        } while (choice != 6);
+    }
+}
